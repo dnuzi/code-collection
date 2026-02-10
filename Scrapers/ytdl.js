@@ -18,7 +18,7 @@ const poll = async (statusUrl) => {
     const { data } = await axios.get(statusUrl, { headers });
     if (data.status === "completed") return data;
     if (data.status === "failed") throw new Error(data.message || "Conversion failed");
-    
+   
     await new Promise(r => setTimeout(r, 2000));
     return poll(statusUrl);
   } catch (err) {
@@ -29,11 +29,11 @@ const poll = async (statusUrl) => {
 async function convertYouTube(url, format = "mp3", quality = "128k") {
   try {
     const type = Object.keys(CONFIG).find(k => CONFIG[k].ext.includes(format));
-    if (!type) throw new Error(`Format tidak didukung: ${format}`);
-
+    if (!type) throw new Error(`Unsupported format: ${format}`);
+    
     const allowedQualities = CONFIG[type].q;
     if (!allowedQualities.includes(quality)) {
-      throw new Error(`Kualitas tidak valid untuk ${type}. Pilih: ${allowedQualities.join(", ")}`);
+      throw new Error(`Invalid quality for ${type}. Choose: ${allowedQualities.join(", ")}`);
     }
 
     // Get basic metadata via oEmbed (reliable & fast)
@@ -61,7 +61,6 @@ async function convertYouTube(url, format = "mp3", quality = "128k") {
     }
 
     const { data: initData } = downloadInit;
-
     if (!initData?.statusUrl) {
       throw new Error("No status URL received from converter");
     }
@@ -73,7 +72,7 @@ async function convertYouTube(url, format = "mp3", quality = "128k") {
       author: meta.author_name,
       duration: meta.duration || result.duration || "Unknown",
       thumbnail: meta.thumbnail_url || null,
-      views: null,           // oEmbed doesn't give views → optional: use yts if needed
+      views: null, // oEmbed doesn't give views → optional: use yts if needed
       downloadUrl: result.downloadUrl,
       format,
       quality,
@@ -83,20 +82,19 @@ async function convertYouTube(url, format = "mp3", quality = "128k") {
     console.error("Convert error:", err.message);
     return {
       status: false,
-      message: err.message || "Gagal mengambil file"
+      message: err.message || "Failed to retrieve file"
     };
   }
 }
 
 // ────────────────────────────────────────
-// Public API functions (same names as before)
+// Public API functions
 // ────────────────────────────────────────
 
 async function ytmp3(url) {
-  if (!url) return { status: false, message: "YouTube URL dibutuhkan" };
-
+  if (!url) return { status: false, message: "YouTube URL is required" };
+  
   const result = await convertYouTube(url, "mp3", "128k");
-
   if (result.status === false) return result;
 
   return {
@@ -105,7 +103,7 @@ async function ytmp3(url) {
     title: result.title,
     channel: result.author,
     duration: result.duration,
-    views: "—",               // can be improved later with yts
+    views: "—", // can be improved later with yts
     thumbnail: result.thumbnail,
     downloadUrl: result.downloadUrl,
     filename: result.filename,
@@ -114,10 +112,9 @@ async function ytmp3(url) {
 }
 
 async function ytmp4(url, quality = "720p") {
-  if (!url) return { status: false, message: "YouTube URL dibutuhkan" };
-
+  if (!url) return { status: false, message: "YouTube URL is required" };
+  
   const result = await convertYouTube(url, "mp4", quality);
-
   if (result.status === false) return result;
 
   return {
