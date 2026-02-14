@@ -196,3 +196,22 @@ const Pixnova = {
 };
 
 module.exports = Pixnova;
+
+// ────────────────────────────────────────────────
+// Test / Example usage
+// ────────────────────────────────────────────────
+
+const fs = require("fs");
+const Pixnova = require("./test");
+
+(async () => {
+  const target = fs.readFileSync("source.jpg");
+  const face   = fs.readFileSync("example.jpg");
+
+  try {
+    const url = await Pixnova.swapImageBuffer(target, face);
+    console.log("Done →", url);
+  } catch (e) {
+    console.error(e);
+  }
+})();
