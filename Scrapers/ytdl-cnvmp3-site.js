@@ -3,7 +3,7 @@ const axios = require('axios')
 const dxzVideoQualities = ['144', '240', '360', '720', '1080']
 const dxzAudioQualities = ['96', '128', '256', '320']
 
-function dxzExtractId(url) {
+function dxzExtractId(url) { 
   const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|embed|watch|shorts)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[&?]|$)/
   const match = url.match(regex)
   return match ? match[1] : null
