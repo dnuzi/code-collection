@@ -1,6 +1,6 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-const fs = require('fs');
+const fs = require('fs'); 
 
 function dxzExtractThumbnail($, element) {
     const context = $(element).closest('li, div, article, .cb-lst-itm, .cb-nws-itm, .cb-nws-lst-itm, section');
