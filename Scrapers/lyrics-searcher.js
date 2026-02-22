@@ -2,7 +2,7 @@ const axios = require("axios");
 
 async function searchLyrics(title) {
   try {
-    const keyword = String(title).trim();
+    const keyword = String(title).trim(); 
     if (!keyword) throw new Error("heat waves");
 
     const { data } = await axios.get(`https://lrclib.net/api/search?q=${encodeURIComponent(keyword)}`, {
