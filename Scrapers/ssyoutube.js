@@ -181,6 +181,6 @@ async function ssyoutube(url, resolution = '720') {
   }
 }
 
-ssyoutube('https://youtu.be/gvunApwKIiY?si=chZvUhH78wR28uKx', '1080')
+ssyoutube('https://youtu.be/gvunApwKIiY?si=chZvUhH78wR28uKx', 'audio')
 .then(console.log)
 .catch(console.error)
